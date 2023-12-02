@@ -3,34 +3,34 @@ import pygame
 SCREEN_WIDTH = 800
 SCREEN_HEIGHT = 576
 
-# Define some colors
+#определяем цвета
 BLACK = (0,0,0)
 WHITE = (255,255,255)
 
 class Player(pygame.sprite.Sprite):
-    lives = 3  # Добавляем переменную для количества жизней
+    lives = 3  #добавляем переменную для количества жизней
     change_x = 0
     change_y = 0
     explosion = False
     game_over = False
     def __init__(self,x,y,filename):
-        # Call the parent class (sprite) constructor
+        #вызов конструктора родительского класса (sprite)
         pygame.sprite.Sprite.__init__(self)
         self.image = pygame.image.load(filename).convert()
         self.image.set_colorkey(BLACK)
         self.rect = self.image.get_rect()
         self.rect.topleft = (x,y)
-        # Load image which will be for the animation
+        #изображение, которое будет использоваться для анимации
         img = pygame.image.load("walk.png").convert()
-        # Create the animations objects
+        #анимационные объекты
         self.move_right_animation = Animation(img,32,32)
         self.move_left_animation = Animation(pygame.transform.flip(img,True,False),32,32)
         self.move_up_animation = Animation(pygame.transform.rotate(img,90),32,32)
         self.move_down_animation = Animation(pygame.transform.rotate(img,270),32,32)
-        # Load explosion image
+        #изображение взрыва при столкновении
         img = pygame.image.load("explosion.png").convert()
         self.explosion_animation = Animation(img,30,30)
-        # Save the player image
+        #изображение игрока
         self.player_image = pygame.image.load(filename).convert()
         self.player_image.set_colorkey(BLACK)
     def move_up(self):
@@ -70,7 +70,7 @@ class Player(pygame.sprite.Sprite):
             self.rect.x += self.change_x
             self.rect.y += self.change_y
 
-            # This will stop the user for go up or down when it is inside of the box
+            #игрок не может ходить сквозь стены
 
             for block in pygame.sprite.spritecollide(self,horizontal_blocks,False):
                 self.rect.centery = block.rect.centery
@@ -79,7 +79,7 @@ class Player(pygame.sprite.Sprite):
                 self.rect.centerx = block.rect.centerx
                 self.change_x = 0
 
-            # This will cause the animation to start
+            #запуск анимации
             
             if self.change_x > 0:
                 self.move_right_animation.update(10)
@@ -135,35 +135,32 @@ class Player(pygame.sprite.Sprite):
         self.change_y = 0
 
 
-
+#анимация
 class Animation(object):
     def __init__(self,img,width,height):
-        # Load the sprite sheet
         self.sprite_sheet = img
-        # Create a list to store the images
+        #список для хранения изображений
         self.image_list = []
         self.load_images(width,height)
-        # Create a variable which will hold the current image of the list
+        #переменная, которая будет содержать текущее изображение списка
         self.index = 0
-        # Create a variable that will hold the time
+        #переменная, которая будет хранить время
         self.clock = 1
         
     def load_images(self,width,height):
-        # Go through every single image in the sprite sheet
         for y in range(0,self.sprite_sheet.get_height(),height):
             for x in range(0,self.sprite_sheet.get_width(),width): 
-                # load images into a list
+                #загрузка изображений в список
                 img = self.get_image(x,y,width,height)
                 self.image_list.append(img)
 
     def get_image(self,x,y,width,height):
-        # Create a new blank image
+        #создание новго пустого изображения
         image = pygame.Surface([width,height]).convert()
-        # Copy the sprite from the large sheet onto the smaller
+        #копируем с другого листа противника
         image.blit(self.sprite_sheet,(0,0),(x,y,width,height))
-        # Assuming black works as the transparent color
+        #Предполагая, что черный работает как прозрачный цвет
         image.set_colorkey((0,0,0))
-        # Return the image
         return image
 
     def get_current_image(self):
@@ -181,7 +178,6 @@ class Animation(object):
             self.clock += 1
 
         if self.clock in l:
-            # Increase index
             self.index += 1
             if self.index == len(self.image_list):
                 self.index = 0
