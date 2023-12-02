@@ -5,40 +5,35 @@ SCREEN_WIDTH = 800
 SCREEN_HEIGHT = 576
 
 def main():
-    # Initialize all imported pygame modules
+    #инициализировать все импортированные модули pygame
     pygame.init()
-    # Set the width and height of the screen [width, height]
+    #установка ширины и высоты экрана
     screen = pygame.display.set_mode((SCREEN_WIDTH,SCREEN_HEIGHT))
-    # Set the current window caption
+    #заголовок текущего окна
     pygame.display.set_caption("PACMAN")
-    #Loop until the user clicks the close button.
     done = False
-    # Used to manage how fast the screen updates
+    #управление скоростью обновления экрана
     clock = pygame.time.Clock()
-    # Create a game object
+    #создание игрового объекта
     game = Game()
     restart = False
-    # -------- Main Program Loop -----------
+    #основной цикл программы
     while not done:
-        if restart:  # Перезапуск игры
+        if restart:  #перезапуск игры
             game = Game()
             restart = False
-        # --- Process events (keystrokes, mouse clicks, etc)
+        #cобытия процесса
         done = game.process_events()
-        # --- Game logic should go here
+        #логика игры
         game.run_logic()
-        # --- Draw the current frame
+        #текущий кадр
         game.display_frame(screen)
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 done = True
-        # --- Limit to 30 frames per second
+        #задаем 30 FPS 
         clock.tick(30)
-
-        #tkMessageBox.showinfo("GAME OVER!","Final Score = "+(str)(GAME.score))
-    # Close the window and quit.
-    # If you forget this line, the program will 'hang'
-    # on exit if running from IDLE.
+        
     pygame.quit()
 
 if __name__ == '__main__':
