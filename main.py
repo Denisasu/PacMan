@@ -31,6 +31,8 @@ def main():
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 done = True
+            elif event.type == pygame.KEYDOWN:
+                pass
         #задаем 30 FPS 
         clock.tick(30)
         
