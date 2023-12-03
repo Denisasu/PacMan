@@ -7,6 +7,9 @@ SCREEN_HEIGHT = 576
 def main():
     #инициализировать все импортированные модули pygame
     pygame.init()
+    #создание иконки
+    icon_image = pygame.image.load("icon.png")
+    pygame.display.set_icon(icon_image)
     #установка ширины и высоты экрана
     screen = pygame.display.set_mode((SCREEN_WIDTH,SCREEN_HEIGHT))
     #заголовок текущего окна
