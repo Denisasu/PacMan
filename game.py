@@ -32,7 +32,7 @@ class Game(object):
         
         self.score = 0 #счёт игры
         self.font = pygame.font.Font(None,35) #шрифт для счёта игры
-        self.menu = Menu(("Start","About","Exit"),font_color = WHITE,font_size=60) #создание меню
+        self.menu = Menu(("Начать","Об игре","Выход"),font_color = WHITE,font_size=60) #создание меню
         self.player = Player(32,128,"player.png") #создание игрока
         #стены
         self.horizontal_blocks = pygame.sprite.Group()
@@ -122,7 +122,9 @@ class Game(object):
 
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 self.player.explosion = True
-                    
+
+            elif event.type == pygame.QUIT:
+                return True
         return False
 
    #логика игры
@@ -182,22 +184,22 @@ class Game(object):
             #text=self.font.render("Score: "+(str)(self.score), 1,self.RED)
             #screen.blit(text, (30, 650))
             #отображение текущего количества жизней игрока
-            lives_text = self.font.render("Lives: " + str(self.player.lives), True, WHITE)
+            lives_text = self.font.render("Жизни: " + str(self.player.lives), True, WHITE)
             screen.blit(lives_text, (10, 10))  #размещаем текст о жизнях в левом верхнем углу экрана
             #текст для очков
-            score_text = self.font.render("Score: " + str(self.score), True, WHITE)
+            score_text = self.font.render("Очки: " + str(self.score), True, WHITE)
             screen.blit(score_text, (10, 30))
             if len(self.dots_group) == 0:
                 screen.blit(self.win_image, (0, 0))
-                self.display_text(screen, "Press R to restart the game", (255, 0, 0), 35)
+                self.display_text(screen, "Нажмите R, чтобы перезапустить игру!", (255, 0, 0), 35)
                 self.game_over = False
             #размещаем текст о счете на уровне с текстом о жизнях
              #если игра окончена и закончились жизни, показываем изображение Game Over
         if self.game_over and self.player.lives <= 0:
             screen.blit(self.game_over_image, (0, 0))
-            self.display_text(screen, "Press R to restart the game!", (0, 255, 0), 35)
+            self.display_text(screen, "Нажмите R, чтобы перезапустить игру!", (0, 255, 0), 35)
             #отображение текущего счета поверх экрана "Game Over"
-            score_text = self.font.render(f"Score: {self.score}", True, WHITE)
+            score_text = self.font.render(f"Очки: {self.score}", True, WHITE)
             score_rect = score_text.get_rect(midbottom=(SCREEN_WIDTH / 2, SCREEN_HEIGHT - 41))
             screen.blit(score_text, score_rect)
         
